@@ -113,6 +113,13 @@ export function zeroUpCross(x, fs = FS) {
   return waves;
 }
 
+// 中間值：由小排到大取中間；偶數個取中間兩個的平均
+export function median(values) {
+  if (!values.length) return 0;
+  const s = [...values].sort((a, b) => a - b), m = s.length >> 1;
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+
 // 最高三分之一的平均（示性值）
 function topThird(values) {
   if (!values.length) return 0;
@@ -168,11 +175,15 @@ export function analyzeWaves({ t, av, roll }) {
 
   const hw = zeroUpCross(etaMid);
   const rw = zeroUpCross(phiMid);
-  const A = topThird(hw.map((w) => w.H));
+  // 陸上測試每次高度相同，要比平均或中間值；最高三分之一會把單道誤差放大
+  const heights = hw.map((w) => w.H);
+  const Hmean = heights.length ? mean(heights) : 0;
+  const Hmed = median(heights);
+  const A = topThird(heights);
   const T = hw.length ? mean(hw.map((w) => w.T)) : 0;
   const R = topThird(rw.map((w) => w.H / 2));
   const { phase, coherence } = crossPhase(etaMid, phiMid);
   const waves = hw.length;
   const quality = waves >= 12 ? '好' : waves >= 8 ? '普通' : '不好';
-  return { ok: true, A, T, R, phase, coherence, waves, rate, seconds, quality };
+  return { ok: true, A, Hmean, Hmed, heights, T, R, phase, coherence, waves, rate, seconds, quality };
 }

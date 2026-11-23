@@ -18,6 +18,17 @@ test('規則浪 1 公尺、6 秒、3 度、領先 90 度', () => {
   assert.ok(r.ok && Math.abs(r.A - 1) < 0.05 && Math.abs(r.T - 6) < 0.2 && Math.abs(r.R - 3) < 0.15, JSON.stringify(r));
   assert.ok(Math.abs(r.phase - 90) < 10 && r.coherence > 0.9 && r.waves >= 12 && r.quality === '好', JSON.stringify(r));
 });
+test('結果附上每道浪的高度、平均與中間值', () => {
+  const r = analyzeWaves(synth({ H: 0.73, T: 5 }));
+  assert.equal(r.heights.length, r.waves);
+  assert.ok(Math.abs(r.Hmean - 0.73) < 0.03 && Math.abs(r.Hmed - 0.73) < 0.03, JSON.stringify(r));
+});
+test('中間值：偶數道取中間兩道的平均', async () => {
+  const { median } = await import('../js/wave-analysis.js');
+  assert.ok(Math.abs(median([0.61, 0.71, 0.68, 1.01, 1.18, 0.68, 0.64, 0.78, 0.65, 1.03]) - 0.695) < 1e-12);
+  assert.equal(median([3, 1, 2]), 2);
+  assert.equal(median([]), 0);
+});
 test('陸上測試：0.75 公尺、5 秒', () => {
   const r = analyzeWaves(synth({ H: 0.75, T: 5 }));
   assert.ok(Math.abs(r.A - 0.75) < 0.05, JSON.stringify(r));

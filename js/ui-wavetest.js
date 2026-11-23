@@ -140,7 +140,10 @@ function renderResult(r, rec) {
     const stable = r.coherence >= 0.5 && r.phase != null;
     const phaseText = r.phase == null ? '量不到' : `${Math.round(r.phase)} 度`;
     el.innerHTML = `<dl class="res">
-      ${row('上下起伏', `${r.A.toFixed(2)} 公尺`, '最高三分之一浪的平均高度，從浪頂到浪底（示性值）')}
+      ${row('上下起伏', `${r.A.toFixed(2)} 公尺`, '最高三分之一浪的平均高度，從浪頂到浪底（示性值），海上用這個')}
+      ${row('平均浪高', `${r.Hmean.toFixed(2)} 公尺`, '所有浪的平均。陸上測試請拿這個和捲尺的數字比')}
+      ${row('中間值', `${r.Hmed.toFixed(2)} 公尺`, '每道浪的高度由小排到大，取正中間')}
+      <p class="ex">每道的高度（公尺，照時間順序）：${r.heights.map((h) => h.toFixed(2)).join('、') || '沒有'}</p>
       ${row('週期', `${r.T.toFixed(1)} 秒`, '一道浪平均幾秒')}
       ${row('晃動角度', `${r.R.toFixed(1)} 度`, '竿子那側抬起的角度，取最高三分之一的平均')}
       ${row('左右搖比起伏早', phaseText, `一整道浪算 360 度，90 度＝早四分之一道浪。${stable ? '穩定' : '不穩定，正式版會改用預設的 90 度'}（相關程度 ${r.coherence.toFixed(2)}）`)}
@@ -153,7 +156,7 @@ function renderResult(r, rec) {
   state.result = r;
   state.csvHead = [
     `# side=${rec.side}, seconds=${rec.seconds.toFixed(1)}, rate=${rec.rate.toFixed(1)}`,
-    r.ok ? `# A=${r.A.toFixed(3)}, T=${r.T.toFixed(2)}, R=${r.R.toFixed(2)}, phase=${r.phase == null ? '' : r.phase.toFixed(1)}, coherence=${r.coherence.toFixed(3)}, waves=${r.waves}` : `# reason=${r.reason}`,
+    r.ok ? `# A=${r.A.toFixed(3)}, Hmean=${r.Hmean.toFixed(3)}, Hmed=${r.Hmed.toFixed(3)}, heights=${r.heights.map((h) => h.toFixed(3)).join('/')}, T=${r.T.toFixed(2)}, R=${r.R.toFixed(2)}, phase=${r.phase == null ? '' : r.phase.toFixed(1)}, coherence=${r.coherence.toFixed(3)}, waves=${r.waves}` : `# reason=${r.reason}`,
   ].join('\n');
   $('sec-result').hidden = false;
   $('sec-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
