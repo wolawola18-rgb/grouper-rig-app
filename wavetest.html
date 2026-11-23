@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b3d5c">
+  <title>量浪測試版</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script type="module" src="js/ui-wavetest.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <h1>量浪測試版</h1>
+    <p class="sub">用手機量船的上下起伏、週期、左右搖角度</p>
+  </header>
+
+  <main>
+    <div id="alert" class="alert" role="alert" hidden></div>
+
+    <section class="card">
+      <h2>1. 擺好手機</h2>
+      <ol class="steps">
+        <li>手機螢幕朝上，頂端朝向船頭。</li>
+        <li>平放在船艙地板，盡量靠近船的中線。</li>
+        <li>量的時候不要碰手機，也不要讓它滑動。</li>
+      </ol>
+      <fieldset class="seg">
+        <legend>面向船頭時，竿子在船的哪一邊</legend>
+        <label><input type="radio" name="side" value="left"><span>左邊</span></label>
+        <label><input type="radio" name="side" value="right" checked><span>右邊</span></label>
+      </fieldset>
+      <fieldset class="seg">
+        <legend>量多久</legend>
+        <label><input type="radio" name="dur" value="120" checked><span>2 分鐘</span></label>
+        <label><input type="radio" name="dur" value="180"><span>3 分鐘</span></label>
+      </fieldset>
+      <p class="note">浪很長、一道浪超過 10 秒時，選 3 分鐘。量到的浪越多，數字越可靠。</p>
+    </section>
+
+    <section class="card">
+      <h2>2. 方向檢查</h2>
+      <p>按下面的按鈕，手機會詢問能不能讀取動作感測器，請按「允許」。接著抬起手機的右側，畫面要顯示「右側抬起」。</p>
+      <button id="btn-sensor" class="btn primary" type="button">開啟感測器</button>
+      <div id="tilt" class="tilt" hidden>
+        <span id="tilt-text">平放</span>
+        <small id="tilt-deg"></small>
+      </div>
+      <p id="tilt-help" class="note" hidden>顯示的方向和你抬起的那一側相反時，請記下來告訴 Claude。</p>
+    </section>
+
+    <section class="card">
+      <h2>3. 開始量</h2>
+      <button id="btn-start" class="btn primary" type="button" disabled>開始量</button>
+      <p id="start-help" class="note">先完成第 2 步，這個按鈕才會亮起來。</p>
+      <div id="run" hidden>
+        <p id="countdown" class="big">2:00</p>
+        <p class="center">量測中，請不要碰手機。</p>
+        <p id="run-info" class="note center"></p>
+        <p id="lock-note" class="note" hidden>量的時候螢幕不能關：請到「設定 → 螢幕顯示與亮度 → 自動鎖定」，改成 5 分鐘。</p>
+        <button id="btn-cancel" class="btn" type="button">取消</button>
+      </div>
+    </section>
+
+    <section id="sec-result" class="card" hidden>
+      <h2>結果</h2>
+      <div id="result"></div>
+      <button id="btn-export" class="btn" type="button">匯出原始資料</button>
+      <p class="note">匯出的檔案可以用 LINE 傳給自己，再存到電腦交給 Claude 分析。</p>
+    </section>
+
+    <section class="card">
+      <h2>陸上測試（在家先試）</h2>
+      <ol class="steps">
+        <li>用捲尺量地板到桌面的高度差，記下來（例如 75 公分）。</li>
+        <li>完成上面第 2 步，竿子選哪一邊都可以。</li>
+        <li>按「開始量」，拿起手機，螢幕朝上、盡量保持水平。</li>
+        <li>在地板和桌面兩個高度之間慢慢上下移動，大約 5 秒一個來回（往上 2.5 秒、往下 2.5 秒），一直重複到時間結束。</li>
+        <li>比較結果的「上下起伏」和捲尺量的高度差。</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>要回報給 Claude 的內容</h2>
+      <ul class="steps">
+        <li>結果畫面的截圖。</li>
+        <li>陸上測試：捲尺量的高度差。</li>
+        <li>方向檢查：抬起右側時，畫面顯示哪一側。</li>
+        <li>船上測試：你感覺當時的浪多大、船搖多大。</li>
+        <li>匯出的原始資料檔。</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

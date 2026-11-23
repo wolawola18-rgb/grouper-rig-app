@@ -1,0 +1,128 @@
+/* 石斑釣組 APP 共用樣式：大字、大按鈕、高對比，晃動的船上和大太陽下都看得清楚 */
+:root {
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: #2b2b2b;
+  --card: #f2f4f6;
+  --line: #b8c2cc;
+  --pri: #0b3d5c;
+  --pri-fg: #ffffff;
+  --warn-bg: #fff1dc;
+  --warn-fg: #5a2a00;
+  font-size: 20px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --fg: #ffffff;
+    --muted: #e0e0e0;
+    --card: #12171c;
+    --line: #3d4955;
+    --pri: #8fd0ff;
+    --pri-fg: #000000;
+    --warn-bg: #3b2a0e;
+    --warn-fg: #ffdca8;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.55;
+}
+.bar {
+  background: var(--pri);
+  color: var(--pri-fg);
+  padding: calc(env(safe-area-inset-top) + 14px) 16px 14px;
+}
+.bar h1 { margin: 0; font-size: 1.4rem; }
+.bar .sub { margin: 2px 0 0; font-size: 0.9rem; }
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4px 16px calc(env(safe-area-inset-bottom) + 32px);
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+}
+h2 { margin: 0 0 8px; font-size: 1.15rem; }
+p { margin: 8px 0; }
+.steps { margin: 8px 0; padding-left: 1.3em; }
+.steps li { margin: 4px 0; }
+.note { color: var(--muted); font-size: 0.85rem; }
+.center { text-align: center; }
+
+.btn {
+  display: block;
+  width: 100%;
+  min-height: 60px;
+  margin-top: 12px;
+  border: 2px solid var(--pri);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn.primary { background: var(--pri); color: var(--pri-fg); }
+.btn:disabled { opacity: 0.4; }
+.btn:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+
+/* 二選一按鈕組：整塊都按得到 */
+.seg { display: flex; gap: 10px; margin: 14px 0 0; padding: 0; border: 0; }
+.seg legend { padding: 0; margin-bottom: 6px; font-weight: 700; }
+.seg label { flex: 1 1 0; position: relative; }
+.seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.seg span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  font-weight: 700;
+}
+.seg input:checked + span { border-color: var(--pri); background: var(--pri); color: var(--pri-fg); }
+.seg input:focus-visible + span { outline: 3px solid var(--fg); outline-offset: 2px; }
+
+.alert {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin: 14px 0 0;
+  font-weight: 700;
+}
+.tilt {
+  margin-top: 12px;
+  padding: 14px;
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+.tilt small { display: block; font-size: 0.85rem; font-weight: 400; }
+.big {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 3.4rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 結果：左邊名稱、右邊數字，說明在下一行 */
+.res { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; margin: 0; align-items: baseline; }
+.res dt { font-weight: 700; padding-top: 10px; }
+.res dd { margin: 0; padding-top: 10px; font-size: 1.35rem; font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+.res .ex { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.8rem; }
